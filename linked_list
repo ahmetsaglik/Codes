@@ -1,0 +1,212 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef struct  node{
+	int data;
+	node * next;
+}node;
+
+
+void bastir(node *r)
+{
+	if(r==NULL)
+	{
+		printf("liste bos.");
+	}
+	else
+	{
+
+	while(r !=NULL)
+	{
+		printf("%d->",r->data);
+		r=r->next;
+	}
+}
+}
+
+node * ilkekle(node *r,int x)
+{
+	r = (node *)malloc(sizeof(node));
+	r->data = x;
+	r->next = NULL;
+	return r;
+}
+
+void sonaekle(node *r,int x)
+{
+	while(r->next!=NULL)
+	{
+		r = r->next;
+	}
+	r->next = (node *)malloc(sizeof(node));
+	r=r->next;
+	r->data = x;
+	r->next=NULL;
+}
+
+void arayaekle(node *r,int y,int x)
+{
+	while(r !=NULL)
+	{
+		if(r->data==y)
+		{
+			node * temp=(node *)malloc(sizeof(node));
+			temp->next = r->next;
+			r->next = temp;
+			temp->data = x;
+			break;
+		}
+		else
+			r=r->next;
+			continue;
+	}
+}
+
+node * basaekle(node *r,int x)
+{
+	node *temp;
+	temp = r;
+	r=(node *)malloc(sizeof(node));
+	r->data = x;
+	r->next = temp;
+	return r;
+}
+
+node * siraliekle(node *r,int x)
+{
+	if(r==NULL)
+	{
+		r = (node *)malloc(sizeof(node));
+		r->data = x;
+		r->next=NULL;
+		return r;
+	}
+	if(r->data>x)
+	 {
+	 	node *temp =(node *)malloc(sizeof(node));
+	 	temp->data=x;
+	 	temp->next = r;
+		return temp;
+	 }
+	node * iter = r;
+	while(iter->next!=NULL && iter->next->data<x)
+	{
+		iter = iter->next;
+	}
+	node * temp = (node *)malloc(sizeof(node));
+	temp->next = iter->next;
+	iter->next = temp;
+	temp->data = x;
+	return r;
+
+}
+
+node * sil(node *r,int x)
+{
+	node *iter = r;
+	node * temp;
+	node * tut;
+	if(iter->data==x)
+	{
+		tut = iter->next;
+		temp = iter;
+		iter->next = tut;
+		free(temp);
+		return tut;
+	}
+
+	while(iter->next->data!=x)
+	{
+		iter = iter->next;
+	}
+	tut = iter->next->next;
+	temp = iter->next;
+	iter->next = tut;
+	free(temp);
+	return r;
+}
+
+int main()
+{
+	int m;
+	node *root = NULL;
+
+	etiket:
+	printf("\n MENU \n");
+	printf("1)sonaekle\n2)bastir\n3)arayaekle\n4)basaekle\n5)siraliekle\n6)cikis\n7)elemansilme\n");
+	printf("secim:");
+	scanf("%d",&m);
+	system("CLS");
+
+	switch(m)
+	{
+		case 1:
+			int x;
+			printf("eklenecek eleman:");
+			scanf("%d",&x);
+
+			if(root==NULL)
+			{
+				root = ilkekle(root,x);
+			}
+			else
+			{
+				sonaekle(root,x);
+			}
+			system("CLS");
+			goto etiket;
+			break;
+
+		case 2:
+			bastir(root);
+			goto etiket;
+			break;
+
+
+		case 6:
+			return 0;
+
+		case 3:
+			int a;
+			printf("hangi elemanin sonrasina eklemek istersiniz:");
+			scanf("%d",&a);
+			printf("eklenecek eleman:");
+			scanf("%d",&x);
+			arayaekle(root,a,x);
+			system("CLS");
+			goto etiket;
+			break;
+
+		case 4:
+			printf("eklenecek eleman:");
+			scanf("%d",&x);
+			root = basaekle(root,x);
+			system("CLS");
+			goto etiket;
+			break;
+
+		case 5:
+			printf("eklenecek eleman:");
+			scanf("%d",&x);
+			root = siraliekle(root,x);
+			system("CLS");
+			goto etiket;
+			break;
+
+		case 7:
+			printf("aranan eleman:");
+			scanf("%d",&x);
+			system("CLS");
+			if(root==NULL)
+			{
+				printf("silinecek eleman yok.");
+				goto etiket;
+				break;
+			}
+			root = sil(root,x);
+			system("CLS");
+			goto etiket;
+			break;
+
+	}
+}
